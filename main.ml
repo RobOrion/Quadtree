@@ -16,7 +16,8 @@ let f = lire path;;
 
 let b = List.map ligne f;;
 
-Noeud =
+type quadtree=Pixel of triplet|Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
+
 (*création d'un noeud*)
 
 let creerArbre (v,f1,f2,f3,f4) = Noeud (v,f1,f2,f3,f4);;
@@ -55,7 +56,7 @@ let hautgauche l =
                           [] -> []
                           |_ -> if List.length mod 2 = 0 then (moitbas (List.hd(l)))::quart1(List.tl(l)) (List.length div 2) in (quart1(moithaut l) 0)
                                 else (moitbas (List.hd(l)))::quart1(List.tl(l)) ((List.length div 2)+1) in (quart1(moithaut l) 0);;
-/à modifier/
+(*à modifier*)
 let hautdroit l =
           let rec quart2 l m = match l with
                           [] -> []
@@ -65,7 +66,7 @@ let basgauche l =
           let rec quart3 l m = match l with
                           [] -> if List.length mod 2 = 0 then (moithaut (List.hd(l)))::quart1(List.tl(l)) (List.length div 2) in (quart1(moitbas l) 0)
                                 else (moithaut (List.hd(l)))::quart1(List.tl(l)) ((List.length div 2)+1) in (quart1(moitbas l) 0);;
-/à modifier/
+(*à modifier*)
 let basdroit l =
           let rec quart4 l m = match l with
                           [] -> []
@@ -99,21 +100,48 @@ let rec creationArbre l f = match l with
 
 let arbreComplet = creationArbre (liste taille);;
 
-let rec miroir (longueurListe(l))(l) =
-    if 1 = n then hd(l) :: [ ]
-    else
-          let rec recu(n)(l) =
-                        if n = 1
-                            then hd(l)
-                            else recu(n-1)(tl(l))
-                in recu(n)(l) :: miroir(n-1)(l));;
+let rec rotation90sensdirect quadtree = 
+  match quadtree with
+  | []    -> []    
+  | Pixel(n,nw,ne,sw,se) -> Pixel(n,(rotate ne),(rotate se),(rotate nw),(rotate sw))
+  | Noeud(n,x,y,v)  -> 
+      let m = n/2 and k = n-1 in
+      match (x < m, y < m) with
+      | (true,  true)  -> Noeud(n, x, k-y, v)
+      | (true,  false) -> Noeud(n, k-x, y, v)
+      | (false, true)  -> Noeud(n, x-k, y, v)
+      | (false, false) -> Noeud(n, x, y-k, v)
 
-let rotDroite a = match a with
-          Noeud (Noeud(u,p,v),q,w) -> Noeud (u,p,Noeud (v,q,w))
-          |_  -> failwith "rotation impossible" ;;
+let rec mirroirHautBas quadtree = 
+  match quadtree with
+  | []    ->  [] 
+  | Pixel(n,nw,ne,sw,se) -> Pixel(n, (mirroirHautBas sw), (mirroirHautBas se), (mirroirHautBas nw), (mirroirHautBas ne))
+  | Noeud(n,x,y,v)  -> 
+      let m = n/2 and k = n-1 in 
+      match y < m with
+      | true  -> Noeud(n, x, k-y, v)
+      | false -> Noeud(n, x, y-k, v)
 
-let rotGauche a = match a with
-          Noeud (u,p,Noeud(v,q,w)) -> Noeud (Noeud (u,p,v),q,w)
-          |_ -> failwith  "rotation impossible" ;;
+let rec mirroirDroiteGauche quadtree =
+  match quadtree with
+  | []    ->  [] 
+  | Pixel(n,nw,ne,sw,se) -> Pixel(n, (mirroirDroiteGauche ne), (mirroirDroiteGauche nw), (mirroirDroiteGauche se), (mirroirDroiteGauche sw))
+  | Noeud(n,x,y,v)  -> 
+      let m = n/2 and k = n-1 in 
+      match x < m with
+      | true  -> Noeud(n, k-x, y, v)
+      | false -> Noeud(n, x-k, y, v)
 
 let inverspixel pixel = {r=255 - pixel.r ; g= 255 - pixel.g ; b = 255 - pixel.b};;
+
+(*à modifier*)
+(* creates a quadtree size 'n' with values inserted from the list of 
+   (x,y,v) tuples - 'x','y' coordinates and 'v' the value *)
+
+let faire_arbre n l =
+  let rec trouver n l quadtree =
+    match l with
+      | []    -> quadtree
+      | x::r -> ( match x with
+          | (x1,x2,x3) -> trouver n r (insert quadtree (x1,x2) x3) )
+  in trouver n l (quadtree (n, n/2, n/2, n/2, n/2))

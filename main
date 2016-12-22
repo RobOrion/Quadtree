@@ -1,3 +1,4 @@
+
 #load "str.cma" ;;
 
 let rec lire = function(fichier) ->
@@ -8,12 +9,16 @@ let rec lire = function(fichier) ->
 let ligne l = Str.split (Str.regexp " ") l;;
 
 let path = open_in "nom_du_fichier";;
+
 seek_in path 0;;
+
 let f = lire path;;
+
 let b = List.map ligne f;;
 
 Noeud =
 (*création d'un noeud*)
+
 let creerArbre (v,f1,f2,f3,f4) = Noeud (v,f1,f2,f3,f4);;
 
 exception Arbre_vide;;
@@ -34,7 +39,7 @@ let rec inserer a x = match a with
           if x=r then a else
           if x>r then Noeud (fg,r,inserer fd x)
           else Noeud (inserer fg x,r,fd);;
-
+ 
 let moithaut l =
           let rec traitement m l =
                             if (m >= (List.length l )) then []
@@ -50,12 +55,12 @@ let hautgauche l =
                           [] -> []
                           |_ -> if List.length mod 2 = 0 then (moitbas (List.hd(l)))::quart1(List.tl(l)) (List.length div 2) in (quart1(moithaut l) 0)
                                 else (moitbas (List.hd(l)))::quart1(List.tl(l)) ((List.length div 2)+1) in (quart1(moithaut l) 0);;
-
+/à modifier/
 let hautdroit l =
           let rec quart2 l m = match l with
                           [] -> []
                           |_ ->  (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
-
+/à modifier/
 let basgauche l =
           let rec quart3 l m = match l with
                           [] -> if List.length mod 2 = 0 then (moithaut (List.hd(l)))::quart1(List.tl(l)) (List.length div 2) in (quart1(moitbas l) 0)

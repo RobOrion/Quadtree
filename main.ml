@@ -1,3 +1,11 @@
+(*---------------------------------------------------------------------------------*)
+(*------------------------CHATELET Robin/ KANDEL Hugo------------------------------*)
+(*---------------------------------------------------------------------------------*)
+
+(*------------------------Projet Quadtree------------------------------*)
+(*------------------------Application du quadtree sur une image ppm------------------------------*)
+
+(*------------------------lecture de l'image et traduction en terme de listes------------------------------*)
 
 #load "str.cma" ;;
 
@@ -16,13 +24,62 @@ let f = lire path;;
 
 let b = List.map ligne f;;
 
-type quadtree=Pixel of triplet|Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
+let imgIn = open_in "p3.ppm";;
+let imgOut = open_out "imgOut.ppm";;
 
-(*création d'un noeud*)
+let rec convStrToInt l = match l with
+		[] -> []
+		|tete::suivant -> (int_of_string (tete) :: convStrToInt (suivant));;
+
+let param img = convStrToInt(Str.split (Str.regexp " ") (input_line img));;
+
+let larg p = List.hd p;;
+
+let haut p = List.nth p 1;;
+
+let ecrParam h l = ("P3\n"^string_of_int(l)^" "^string_of_int(h)^" "^"255"^" ");;
+
+let carac a n = List.nth a n;;
+
+(*------------------------définition des types à utiliser------------------------------*)
+
+type Pixel={r : int ; g : int ; b : int};;
+
+type quadtree=Pixel of triplet|Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
 
 let creerArbre (v,f1,f2,f3,f4) = Noeud (v,f1,f2,f3,f4);;
 
 exception Arbre_vide;;
+
+(*------------------------traduction des données binaires------------------------------*)
+
+let retourneBinaire = 
+          let rec retourne l1 l2 = match l2 with 
+			[] -> l1 
+                              |a :: tl -> retourne (a :: l1) tl  in  retourne[];;
+
+let retourneLigneBinaire a = retourneBinaire (convStrToInt(Str.split (Str.regexp " ") (input_line a)));;
+
+let ecrireBinaire n = match n with
+	0 ->("0 "^"0 "^"0 ")
+	|1 ->("255 "^"255 "^"255 ")
+	|_ ->("");;
+
+let traduireBinaire a n = ecrireBinaire(carac a n);;
+
+let rec tligneB a x = match x with
+		(-1) -> " "
+		|n -> (translateB a n)^(tligneB a (x-1));;
+
+let finalB a l = tligneB (a (l-1));;
+
+let rec timgB nb l = match nb with 
+			0 -> ""
+			|_ -> let a = revlineB imgIn in (finalB a l)^"\n"^(timgB (nb-1) l);;
+
+let bin img = let p = param img in let h = haut p in let l = larg p in output_string imgOut ((ecrParam h l)^(timgB h l));;
+
+(*------------------------définition des types à utiliser------------------------------*)
 
 let getRacine a = match a with
               Nul -> raise Arbre_vide
@@ -103,10 +160,8 @@ let arbreComplet = creationArbre (liste taille);;
 let rec rotation90sensdirect quadtree = 
   match quadtree with
   | []    -> []    
-  | Pixel(n,nw,ne,sw,se) -> Pixel(n,(rotate ne),(rotate se),(rotate nw),(rotate sw))
   | Noeud(n,x,y,v)  -> 
-      let m = n/2 and k = n-1 in
-      match (x < m, y < m) with
+      let m = n/2 and k = n-1 in match (x < m, y < m) with
       | (true,  true)  -> Noeud(n, x, k-y, v)
       | (true,  false) -> Noeud(n, k-x, y, v)
       | (false, true)  -> Noeud(n, x-k, y, v)
@@ -115,20 +170,16 @@ let rec rotation90sensdirect quadtree =
 let rec mirroirHautBas quadtree = 
   match quadtree with
   | []    ->  [] 
-  | Pixel(n,nw,ne,sw,se) -> Pixel(n, (mirroirHautBas sw), (mirroirHautBas se), (mirroirHautBas nw), (mirroirHautBas ne))
   | Noeud(n,x,y,v)  -> 
-      let m = n/2 and k = n-1 in 
-      match y < m with
+      let m = n/2 and k = n-1 in match y < m with
       | true  -> Noeud(n, x, k-y, v)
       | false -> Noeud(n, x, y-k, v)
 
 let rec mirroirDroiteGauche quadtree =
   match quadtree with
   | []    ->  [] 
-  | Pixel(n,nw,ne,sw,se) -> Pixel(n, (mirroirDroiteGauche ne), (mirroirDroiteGauche nw), (mirroirDroiteGauche se), (mirroirDroiteGauche sw))
   | Noeud(n,x,y,v)  -> 
-      let m = n/2 and k = n-1 in 
-      match x < m with
+      let m = n/2 and k = n-1 in match x < m with
       | true  -> Noeud(n, k-x, y, v)
       | false -> Noeud(n, x-k, y, v)
 

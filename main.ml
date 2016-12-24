@@ -61,25 +61,28 @@ let retourneBinaire =
 let retourneLigneBinaire a = retourneBinaire (convStrToInt(Str.split (Str.regexp " ") (input_line a)));;
 
 let ecrireBinaire n = match n with
-	0 ->("0 "^"0 "^"0 ")
+	 0 ->("0 "^"0 "^"0 ")
 	|1 ->("255 "^"255 "^"255 ")
 	|_ ->("");;
 
 let traduireBinaire a n = ecrireBinaire(carac a n);;
 
-let rec tligneB a x = match x with
+let rec traduireLigneBinaire a x = match x with
 		(-1) -> " "
-		|n -> (translateB a n)^(tligneB a (x-1));;
+		|n -> (traduireBinaire a n)^(traduireLigneBinaire a (x-1));;
 
-let finalB a l = tligneB (a (l-1));;
+let listeFinaleBinaire a l = traduireLigneBinaire (a (l-1));;
 
 let rec timgB nb l = match nb with 
 			0 -> ""
-			|_ -> let a = revlineB imgIn in (finalB a l)^"\n"^(timgB (nb-1) l);;
+			|_ -> let a = retourneLigneBinaire imgIn in (listeFinaleBinaire a l)^"\n"^(timgB (nb-1) l);;
 
-let bin img = let p = param img in let h = haut p in let l = larg p in output_string imgOut ((ecrParam h l)^(timgB h l));;
+let bin img = 
+	let p = param img in 
+	let h = haut p in 
+	let l = larg p in output_string imgOut ((ecrParam h l)^(timgB h l));;
 
-(*------------------------définition des types à utiliser------------------------------*)
+(*------------------------construction de l'arbre------------------------------*)
 
 let getRacine a = match a with
               Nul -> raise Arbre_vide

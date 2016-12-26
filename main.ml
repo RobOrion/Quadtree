@@ -88,9 +88,7 @@ let getRacine a = match a with
               Nul -> raise Arbre_vide
               |Noeud (v,_,_,_,_) -> v;;
 
-let TailleImage = open_in "image.ppm";;
-
-let rec longueurListe(l) =
+let rec longueurListe l =
         if tl(l) = [ ] then 1
         else 1 + longueurListe(List.tl(l));;
 
@@ -103,19 +101,19 @@ let rec inserer a x = match a with
  
 let moithaut l =
           let rec traitement m l =
-                            if (m >= (List.length l )) then []
+                            if (m >= (longueurListe l )) then []
                             else ( (List.hd l)::(traitement (m+1) (List.tl l)) ) in traitement 0 l ;;
 
 let moitbas l =
           let rec traitement m l =
-                            if (m >= (List.length l )) then l
+                            if (m >= (longueurListe l )) then l
                             else (traitement (m+1) (List.tl l))  in traitement 0 l ;;
 
 let hautgauche l =
           let rec quart1 l m = match l with
                           [] -> []
-                          |_ -> if List.length mod 2 = 0 then (moitbas (List.hd(l)))::quart1(List.tl(l)) (List.length div 2) in (quart1(moithaut l) 0)
-                                else (moitbas (List.hd(l)))::quart1(List.tl(l)) ((List.length div 2)+1) in (quart1(moithaut l) 0);;
+                          |_ -> if (longueurListe (l)) mod 2 = 0 then (moitbas (List.hd(l)))::quart1(List.tl(l)) (longueurListes(l) div 2) in (quart1(moithaut l) 0)
+                                else (moitbas (List.hd(l)))::quart1(List.tl(l)) ((longueurListe (l) div 2)+1) in (quart1(moithaut l) 0);;
 (*à modifier*)
 let hautdroit l =
           let rec quart2 l m = match l with
@@ -124,8 +122,8 @@ let hautdroit l =
 
 let basgauche l =
           let rec quart3 l m = match l with
-                          [] -> if List.length mod 2 = 0 then (moithaut (List.hd(l)))::quart1(List.tl(l)) (List.length div 2) in (quart1(moitbas l) 0)
-                                else (moithaut (List.hd(l)))::quart1(List.tl(l)) ((List.length div 2)+1) in (quart1(moitbas l) 0);;
+                          [] -> if (longueurListe(l)) mod 2 = 0 then (moithaut (List.hd(l)))::quart1(List.tl(l)) (longueurListe(l) div 2) in (quart1(moitbas l) 0)
+                                else (moithaut (List.hd(l)))::quart1(List.tl(l)) ((longueurListe(l) div 2)+1) in (quart1(moitbas l) 0);;
 (*à modifier*)
 let basdroit l =
           let rec quart4 l m = match l with

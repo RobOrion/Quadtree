@@ -56,7 +56,7 @@ exception Arbre_vide;;
 let retourneBinaire = 
           let rec retourne l1 l2 = match l2 with 
 			[] -> l1 
-                              |a :: tl -> retourne (a :: l1) tl  in  retourne[];;
+                        |a :: tl -> retourne (a :: l1) tl  in  retourne[];;
 
 let retourneLigneBinaire a = retourneBinaire (convStrToInt(Str.split (Str.regexp " ") (input_line a)));;
 

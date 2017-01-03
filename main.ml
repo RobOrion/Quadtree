@@ -105,26 +105,29 @@ let moithaut l =
                             else ( (List.hd l)::(traitement (m+1) (List.tl l)) ) in traitement 0 l ;;
 
 let moitbas l =
-          let rec traitement m l =
-                            if (m >= (longueurListe l )) then l
-                            else (traitement (m+1) (List.tl l))  in traitement 0 l ;;
+          let rec traitement m l = if (m >= (longueurListe l )) then l
+                            	   else (traitement (m+1) (List.tl l))  in traitement 0 l ;;
 
-let hautgauche l =
-          let rec quart1 l m = match l with
+let gauche l m =
+	  let rec traitement m l = if (m
+
+(*à modifier : gauche de l'image (taille /2*)
+let hautgauche l = 
+	let quart1 l m = match l with
                           [] -> []
-                          |_ -> if (longueurListe (l)) mod 2 = 0 then (moitbas (List.hd(l)))::quart1(List.tl(l)) (longueurListes(l) div 2) in (quart1(moithaut l) 0)
-                                else (moitbas (List.hd(l)))::quart1(List.tl(l)) ((longueurListe (l) div 2)+1) in (quart1(moithaut l) 0);;
+                          |_ -> gauche l ((List.length l) / 2);;
 
 let hautdroit l =
           let rec quart2 l m = match l with
                           [] -> []
                           |_ ->  (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
-(*à modifier*)
+
+(*à modifier : gauche de l'image (bas de l'image (taille /2)) *)
 let basgauche l =
-          let rec quart3 l m = match l with
-                          [] -> if (longueurListe(l)) mod 2 = 0 then (moithaut (List.hd(l)))::quart1(List.tl(l)) (longueurListe(l) div 2) in (quart1(moitbas l) 0)
-                                else (moithaut (List.hd(l)))::quart1(List.tl(l)) ((longueurListe(l) div 2)+1) in (quart1(moitbas l) 0);;
-(*à modifier*)
+          let quart3 l m = match l with
+                          [] -> []
+			  |_ -> gauche (moitbas l) ((List.length l) / 2);;
+
 let basdroit l =
           let rec quart4 l m = match l with
                           [] -> []

@@ -114,12 +114,12 @@ let hautgauche l =
                           [] -> []
                           |_ -> if (longueurListe (l)) mod 2 = 0 then (moitbas (List.hd(l)))::quart1(List.tl(l)) (longueurListes(l) div 2) in (quart1(moithaut l) 0)
                                 else (moitbas (List.hd(l)))::quart1(List.tl(l)) ((longueurListe (l) div 2)+1) in (quart1(moithaut l) 0);;
-(*à modifier*)
+
 let hautdroit l =
           let rec quart2 l m = match l with
                           [] -> []
                           |_ ->  (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
-
+(*à modifier*)
 let basgauche l =
           let rec quart3 l m = match l with
                           [] -> if (longueurListe(l)) mod 2 = 0 then (moithaut (List.hd(l)))::quart1(List.tl(l)) (longueurListe(l) div 2) in (quart1(moitbas l) 0)

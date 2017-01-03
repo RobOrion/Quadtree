@@ -43,9 +43,9 @@ let carac a n = List.nth a n;;
 
 (*------------------------définition des types à utiliser------------------------------*)
 
-type Pixel={r : int ; g : int ; b : int};;
+type Pixel = {r : int ; g : int ; b : int};;
 
-type quadtree=Pixel of triplet|Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
+type quadtree = Pixel of triplet | Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
 
 let creerArbre (v,f1,f2,f3,f4) = Noeud (v,f1,f2,f3,f4);;
 
@@ -108,17 +108,20 @@ let moitbas l =
           let rec traitement m l = if (m >= (longueurListe l )) then l
                             	   else (traitement (m+1) (List.tl l))  in traitement 0 l ;;
 
-let gauche l m =
-	  let rec traitement m l = if (m
+let rec gauche l n = match l with 
+	[] -> []
+	| _ -> match ( n < (List.length l)) with
+		false -> []
+		|true -> (List.nth l n)::(List.nth l (n+1))::(List.nth l (n+2))::(List.nth l (n+3))::(div l (n+(sqrt(List.length l))));;
 
-(*à modifier : gauche de l'image (taille /2*)
+(* à modifier : gauche de l'image (taille /2) *)
 let hautgauche l = 
 	let quart1 l m = match l with
                           [] -> []
                           |_ -> gauche l ((List.length l) / 2);;
 
 let hautdroit l =
-          let rec quart2 l m = match l with
+          let rec quart2 l m = match l with 
                           [] -> []
                           |_ ->  (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
 

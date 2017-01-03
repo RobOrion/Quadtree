@@ -1,7 +1,9 @@
 
 (* Par quentin et tyty *)
 
-
+(* image de type     12
+                     43*)
+                     
 (*Q1_____________*)
 let rec minidiviq1 l n = match l with (*n=0 moitiée gauche liste*)
 [] -> []

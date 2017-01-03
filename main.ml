@@ -1,22 +1,24 @@
 (*---------------------------------------------------------------------------------*)
-(*------------------------CHATELET Robin/ KANDEL Hugo------------------------------*)
+(*------------------------ CHATELET Robin/ KANDEL Hugo ------------------------------*)
 (*---------------------------------------------------------------------------------*)
 
-(*------------------------Projet Quadtree------------------------------*)
-(*------------------------Application du quadtree sur une image ppm------------------------------*)
+(*------------------------ Projet Quadtree ------------------------------*)
+(*------------------------ Application du quadtree sur une image ppm ------------------------------*)
 
-(*------------------------lecture de l'image et traduction en terme de listes------------------------------*)
+(*------------------------ lecture de l'image et traduction en terme de listes ------------------------------*)
+
+(* #use "main.ml";; *) 
 
 #load "str.cma" ;;
 
 let rec lire = function(fichier) ->
-          let i = input_line(fichier) in
+          try let i = input_line(fichier) in
                     i::lire(fichier)
                     with End_of_file -> [];;
 
 let ligne l = Str.split (Str.regexp " ") l;;
 
-let path = open_in "nom_du_fichier";;
+let path = open_in "zombie.ppm";;
 
 seek_in path 0;;
 
@@ -43,7 +45,7 @@ let carac a n = List.nth a n;;
 
 (*------------------------définition des types à utiliser------------------------------*)
 
-type Pixel = {r : int ; g : int ; b : int};;
+type triplet = {r : int; g : int; b : int};;
 
 type quadtree = Pixel of triplet | Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
 
@@ -73,7 +75,7 @@ let rec traduireLigneBinaire a x = match x with
 
 let listeFinaleBinaire a l = traduireLigneBinaire (a (l-1));;
 
-let rec timgB nb l = match nb with 
+let rec timgB nb l = match nb with
 			0 -> ""
 			|_ -> let a = retourneLigneBinaire imgIn in (listeFinaleBinaire a l)^"\n"^(timgB (nb-1) l);;
 
@@ -110,26 +112,26 @@ let moitbas l =
 
 let rec gauche l n = match l with 
 	[] -> []
-	| _ -> match ( n < (List.length l)) with
+	| _ -> match (n < (List.length l)) with
 		false -> []
 		|true -> (List.nth l n)::(List.nth l (n+1))::(List.nth l (n+2))::(List.nth l (n+3))::(div l (n+(sqrt(List.length l))));;
 
-(* à modifier : gauche de l'image (taille /2) *)
+(* à modifier : gauche de l'image (taille /2)
 let hautgauche l = 
 	let quart1 l m = match l with
                           [] -> []
-                          |_ -> gauche l ((List.length l) / 2);;
+                          |_ -> gauche l ((List.length l) / 2);; *)
 
 let hautdroit l =
           let rec quart2 l m = match l with 
                           [] -> []
                           |_ ->  (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
 
-(*à modifier : gauche de l'image (bas de l'image (taille /2)) *)
+(*à modifier : gauche de l'image (bas de l'image (taille /2)) 
 let basgauche l =
           let quart3 l m = match l with
                           [] -> []
-			  |_ -> gauche (moitbas l) ((List.length l) / 2);;
+			  |_ -> gauche (moitbas l) ((List.length l) / 2);; *)
 
 let basdroit l =
           let rec quart4 l m = match l with

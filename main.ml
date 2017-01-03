@@ -47,7 +47,7 @@ let carac a n = List.nth a n;;
 
 type triplet = {r : int; g : int; b : int};;
 
-type quadtree = Pixel of triplet | Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
+type quadtree = Pixel of int * triplet|Noeud of triplet * quadtree * quadtree * quadtree * quadtree;;
 
 let creerArbre (v,f1,f2,f3,f4) = Noeud (v,f1,f2,f3,f4);;
 

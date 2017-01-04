@@ -170,7 +170,7 @@ let moyenneFinaleListeBin l = (sommeListePixelBinaire(l))/ (longueurListe l);;
 
 let moyenneListePixel a = [a];;
 
-let egalite l = List.for_all (fun x -> if (x = (List.hd l)) then true else false)l;;
+let egalite l = List.for_all (fun x -> if (x = (List.hd l)) then true else false) l;;
 
 let rec creationArbre l f = match l with
           []-> Nul
@@ -181,7 +181,7 @@ let rec creationArbre l f = match l with
 
 let arbreComplet = creationArbre (liste taille);;
 
-let rec rotation90sensdirect quadtree = match quadtree with
+let rec rotation90sensdirect arbre = match arbre with
   	| []    -> []    
   	| Noeud(n,x,y,v)  -> 
      			 let m = n/2 and k = n-1 in match (x < m, y < m) with
@@ -190,14 +190,14 @@ let rec rotation90sensdirect quadtree = match quadtree with
       					 | (false, true)  -> Noeud(n, x-k, y, v)
       					 | (false, false) -> Noeud(n, x, y-k, v)
 
-let rec mirroirHautBas quadtree = match quadtree with
+let rec mirroirHautBas arbre = match arbre with
   	| []    ->  [] 
   	| Noeud(n,x,y,v)  -> 
       			let m = n/2 and k = n-1 in match y < m with
       					| true  -> Noeud(n, x, k-y, v)
       					| false -> Noeud(n, x, y-k, v)
 
-let rec mirroirDroiteGauche quadtree = match quadtree with
+let rec mirroirDroiteGauche arbre = match arbre with
   	| []    ->  [] 
   	| Noeud(n,x,y,v)  -> 
       			let m = n/2 and k = n-1 in match x < m with

@@ -24,7 +24,7 @@ seek_in path 0;;
 
 let f = lire path;;
 
-let b = List.map ligne f;;
+let l = List.map ligne f;;
 
 let imgIn = open_in "p3.ppm";;
 let imgOut = open_out "imgOut.ppm";;
@@ -86,16 +86,17 @@ let bin img =
 
 (*------------------------construction de l'arbre------------------------------*)
 
-let getRacine a = match a with
-              Nul -> raise Arbre_vide
-              |Noeud (v,_,_,_,_) -> v;;
-
+(*let getRacine a = match a with
+              Pixel(_,v)-> raise Arbre_vide
+              |Noeud (v,_,_,_,_) -> v;;*)
+	     
+	     (*problème sur le constructeur Noeud*)
 let rec longueurListe l =
-        if tl(l) = [ ] then 1
+        if List.tl(l) = [] then 1
         else 1 + longueurListe(List.tl(l));;
 
 let rec inserer a x = match a with
-          Nul -> Noeud (Nul,x,Nul)
+           Pixel(_,v)-> Noeud (_,_,x,_,_)
           | Noeud (fg,r,fd) ->
           if x=r then a else
           if x>r then Noeud (fg,r,inserer fd x)
@@ -110,40 +111,40 @@ let moitbas l =
           let rec traitement m l = if (m >= (longueurListe l )) then l
                             	   else (traitement (m+1) (List.tl l))  in traitement 0 l ;;
 
-let rec gauche l n = match l with 
+(*let rec gauche l n = match l with 
 	[] -> []
 	| _ -> match (n < (List.length l)) with
 		false -> []
 		|true -> (List.nth l n)::(List.nth l (n+1))::(List.nth l (n+2))::(List.nth l (n+3))::(div l (n+(sqrt(List.length l))));;
-
+*)
 let rec hautgauche1 l n = match l with (*n=0 moitiée gauche liste*)
-[] -> []
-| _ -> (match (n)<((List.length l)/2) with
-    false -> []
-    | true -> (List.nth l n)::(hautgauche1 l (n+1)));;
+	[] -> []
+	| _ -> (match (n)<((List.length l)/2) with
+    		false -> []
+    		| true -> (List.nth l n)::(hautgauche1 l (n+1)));;
 
 let rec hautgauche2 l n = match l with (*n=0 moitiée gauche*)
-[] -> []
-| _ -> (match (n)<((List.length l)/2) with
-    false -> []
-    | true -> (hautgauche1 (List.nth l n) 0)::(hautgauche2 l (n+1)));;
+	[] -> []
+	| _ -> (match (n)<((List.length l)/2) with
+    		false -> []
+    	| true -> (hautgauche1 (List.nth l n) 0)::(hautgauche2 l (n+1)));;
 
 let hautdroit l =
           let rec quart2 l m = match l with 
                           [] -> []
-                          |_ -> (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
+                          |_ -> (moitbas (List.hd(l)))::quart2(List.tl(l)) (m+1) in quart2(moithaut l) 0;;
 
 let rec basgauche1 l n = match l with
-[] -> []
-| _ -> (match (n)<((List.length l)/2) with
-    false -> []
-    | true -> (List.nth l n)::(basgauche1 l (n+1)));;
+	[] -> []
+	| _ -> (match (n)<((List.length l)/2) with
+    		false -> []
+    		| true -> (List.nth l n)::(basgauche1 l (n+1)));;
 
 let rec basgauche2 l n = match l with
-[] -> []
-| _ -> (match (n)<((List.length l)) with
-    false -> []
-    | true -> (basgauche1 (List.nth l n) 0)::(basgauche2 l (n+1)));;
+	[] -> []
+	| _ -> (match (n)<((List.length l)) with
+    		false -> []
+    	| true -> (basgauche1 (List.nth l n) 0)::(basgauche2 l (n+1)));;
 
 let basdroit l =
           let rec quart4 l m = match l with
@@ -169,6 +170,8 @@ let moyenneFinaleListeBin l = (sommeListePixelBinaire(l))/ (longueurListe l);;
 
 let moyenneListePixel a = [a];;
 
+let egalite l = List.for_all (fun x -> if (x = (List.hd l)) then true else false)l;;
+
 let rec creationArbre l f = match l with
           []-> Nul
           |a::[] -> creerArbre(moyenneListePixel(moyenneFinaleListeBin(l))) Nul Nul Nul Nul
@@ -178,8 +181,7 @@ let rec creationArbre l f = match l with
 
 let arbreComplet = creationArbre (liste taille);;
 
-let rec rotation90sensdirect quadtree = 
-  match quadtree with
+let rec rotation90sensdirect quadtree = match quadtree with
   | []    -> []    
   | Noeud(n,x,y,v)  -> 
       let m = n/2 and k = n-1 in match (x < m, y < m) with
@@ -188,16 +190,14 @@ let rec rotation90sensdirect quadtree =
       | (false, true)  -> Noeud(n, x-k, y, v)
       | (false, false) -> Noeud(n, x, y-k, v)
 
-let rec mirroirHautBas quadtree = 
-  match quadtree with
+let rec mirroirHautBas quadtree = match quadtree with
   | []    ->  [] 
   | Noeud(n,x,y,v)  -> 
       let m = n/2 and k = n-1 in match y < m with
       | true  -> Noeud(n, x, k-y, v)
       | false -> Noeud(n, x, y-k, v)
 
-let rec mirroirDroiteGauche quadtree =
-  match quadtree with
+let rec mirroirDroiteGauche quadtree = match quadtree with
   | []    ->  [] 
   | Noeud(n,x,y,v)  -> 
       let m = n/2 and k = n-1 in match x < m with
@@ -210,10 +210,10 @@ let inverspixel pixel = {r=255 - pixel.r ; g= 255 - pixel.g ; b = 255 - pixel.b}
 (* creates a quadtree size 'n' with values inserted from the list of 
    (x,y,v) tuples - 'x','y' coordinates and 'v' the value *)
 
-let faire_arbre n l =
+(*let faire_arbre n l =
   let rec trouver n l quadtree =
     match l with
       | []    -> quadtree
       | x::r -> ( match x with
           | (x1,x2,x3) -> trouver n r (insert quadtree (x1,x2) x3) )
-  in trouver n l (quadtree (n, n/2, n/2, n/2, n/2))
+  in trouver n l (quadtree (n, n/2, n/2, n/2, n/2))*)

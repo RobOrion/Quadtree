@@ -26,7 +26,7 @@ let f = lire path;;
 
 let l = List.map ligne f;;
 
-let imgIn = open_in "p3.ppm";;
+let imgIn = open_in "zombie.ppm";;
 let imgOut = open_out "imgOut.ppm";;
 
 let rec convStrToInt l = match l with
@@ -75,14 +75,14 @@ let rec traduireLigneBinaire a x = match x with
 
 let listeFinaleBinaire a l = traduireLigneBinaire (a (l-1));;
 
-let rec timgB nb l = match nb with
+(*let rec timgB nb l = match nb with
 			0 -> ""
 			|_ -> let a = retourneLigneBinaire imgIn in (listeFinaleBinaire a l)^"\n"^(timgB (nb-1) l);;
 
 let bin img = 
 	let p = param img in 
 	let h = haut p in 
-	let l = larg p in output_string imgOut ((ecrParam h l)^(timgB h l));;
+	let l = larg p in output_string imgOut ((ecrParam h l)^(timgB h l));; *)
 
 (*------------------------construction de l'arbre------------------------------*)
 
@@ -95,13 +95,13 @@ let rec longueurListe l =
         if List.tl(l) = [] then 1
         else 1 + longueurListe(List.tl(l));;
 
-let rec inserer a x = match a with
+(*let rec inserer a x = match a with
            Pixel(_,v)-> Noeud (_,_,x,_,_)
           | Noeud (fg,r,fd) ->
           if x=r then a else
           if x>r then Noeud (fg,r,inserer fd x)
           else Noeud (inserer fg x,r,fd);;
- 
+ *)
 let moithaut l =
           let rec traitement m l =
                             if (m >= (longueurListe l )) then []

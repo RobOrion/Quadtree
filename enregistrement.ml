@@ -15,14 +15,14 @@ let rec fusion m1 m2 n = match m2 with
 let creerMat a = [[a]];;
 
 let rec transfoArbre a = match a with
-              Nul -> []
-              |Noeud(v,1,Nul,Nul,Nul) -> creerMat(v)
+              [] -> []
+              |Pixel(_,v) -> creerMat(v)
               |Noeud(v,f1,f2,f3,f4) -> fusion ((transfoArbre f1)@(transfoArbre f3)) ((transfoArbre f2)(transfoArbre f4)) 0;;
               
 let PixeltoString pixel = (string_of_int pixel.r)^" "^(string_of_int pixel.g)^" "^(string_of_int pixel.b)^" ";;
 
-
-
-
+let rec StringToInt l = match l with
+		[] -> []
+		|tete::suivant -> (int_of_string (tete) :: convStrToInt (suivant));;
 
 

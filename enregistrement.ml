@@ -1,1 +1,5 @@
+(*------------------------ Enregistrement ------------------------------*)
+
+generer matrice couleur
+
 

@@ -116,22 +116,34 @@ let rec gauche l n = match l with
 		false -> []
 		|true -> (List.nth l n)::(List.nth l (n+1))::(List.nth l (n+2))::(List.nth l (n+3))::(div l (n+(sqrt(List.length l))));;
 
-(* à modifier : gauche de l'image (taille /2)
-let hautgauche l = 
-	let quart1 l m = match l with
-                          [] -> []
-                          |_ -> gauche l ((List.length l) / 2);; *)
+let rec hautgauche1 l n = match l with (*n=0 moitiée gauche liste*)
+[] -> []
+| _ -> (match (n)<((List.length l)/2) with
+    false -> []
+    | true -> (List.nth l n)::(hautgauche1 l (n+1)));;
+
+let rec hautgauche1 l n = match l with (*n=0 moitiée gauche*)
+[] -> []
+| _ -> (match (n)<((List.length l)/2) with
+    false -> []
+    | true -> (hautgauche1 (List.nth l n) 0)::(hautgauche2 l (n+1)));;
 
 let hautdroit l =
           let rec quart2 l m = match l with 
                           [] -> []
-                          |_ ->  (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
+                          |_ -> (moitbas (List.hd(l)))::quart1(List.tl(l)) (m+1) in quart1(moithaut l) 0;;
 
-(*à modifier : gauche de l'image (bas de l'image (taille /2)) 
-let basgauche l =
-          let quart3 l m = match l with
-                          [] -> []
-			  |_ -> gauche (moitbas l) ((List.length l) / 2);; *)
+let rec basgauche1 l n = match l with
+[] -> []
+| _ -> (match (n)<((List.length l)/2) with
+    false -> []
+    | true -> (List.nth l n)::(basgauche1 l (n+1)));;
+
+let rec basgauche2 l n = match l with
+[] -> []
+| _ -> (match (n)<((List.length l)) with
+    false -> []
+    | true -> (basgauche1 (List.nth l n) 0)::(basgauche2 l (n+1)));;
 
 let basdroit l =
           let rec quart4 l m = match l with

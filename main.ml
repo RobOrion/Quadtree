@@ -182,27 +182,27 @@ let rec creationArbre l f = match l with
 let arbreComplet = creationArbre (liste taille);;
 
 let rec rotation90sensdirect quadtree = match quadtree with
-  | []    -> []    
-  | Noeud(n,x,y,v)  -> 
-      let m = n/2 and k = n-1 in match (x < m, y < m) with
-      | (true,  true)  -> Noeud(n, x, k-y, v)
-      | (true,  false) -> Noeud(n, k-x, y, v)
-      | (false, true)  -> Noeud(n, x-k, y, v)
-      | (false, false) -> Noeud(n, x, y-k, v)
+  	| []    -> []    
+  	| Noeud(n,x,y,v)  -> 
+     			 let m = n/2 and k = n-1 in match (x < m, y < m) with
+     					 | (true,  true)  -> Noeud(n, x, k-y, v)
+      					 | (true,  false) -> Noeud(n, k-x, y, v)
+      					 | (false, true)  -> Noeud(n, x-k, y, v)
+      					 | (false, false) -> Noeud(n, x, y-k, v)
 
 let rec mirroirHautBas quadtree = match quadtree with
-  | []    ->  [] 
-  | Noeud(n,x,y,v)  -> 
-      let m = n/2 and k = n-1 in match y < m with
-      | true  -> Noeud(n, x, k-y, v)
-      | false -> Noeud(n, x, y-k, v)
+  	| []    ->  [] 
+  	| Noeud(n,x,y,v)  -> 
+      			let m = n/2 and k = n-1 in match y < m with
+      					| true  -> Noeud(n, x, k-y, v)
+      					| false -> Noeud(n, x, y-k, v)
 
 let rec mirroirDroiteGauche quadtree = match quadtree with
-  | []    ->  [] 
-  | Noeud(n,x,y,v)  -> 
-      let m = n/2 and k = n-1 in match x < m with
-      | true  -> Noeud(n, k-x, y, v)
-      | false -> Noeud(n, x-k, y, v)
+  	| []    ->  [] 
+  	| Noeud(n,x,y,v)  -> 
+      			let m = n/2 and k = n-1 in match x < m with
+      					| true  -> Noeud(n, k-x, y, v)
+      					| false -> Noeud(n, x-k, y, v)
 
 let inverspixel pixel = {r=255 - pixel.r ; g= 255 - pixel.g ; b = 255 - pixel.b};;
 

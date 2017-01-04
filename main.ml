@@ -122,7 +122,7 @@ let rec hautgauche1 l n = match l with (*n=0 moitiée gauche liste*)
     false -> []
     | true -> (List.nth l n)::(hautgauche1 l (n+1)));;
 
-let rec hautgauche1 l n = match l with (*n=0 moitiée gauche*)
+let rec hautgauche2 l n = match l with (*n=0 moitiée gauche*)
 [] -> []
 | _ -> (match (n)<((List.length l)/2) with
     false -> []
@@ -150,9 +150,9 @@ let basdroit l =
                           [] -> []
                           |_ -> (moithaut (List.hd(l)))::quart4(List.tl(l)) (m+1) in quart4 (moitbas l) 0;;
 
-let liste1 = hautgauche l;;
+let liste1 = hautgauche2 l;;
 let liste2 = hautdroit l;;
-let liste3 = basgauche l;;
+let liste3 = basgauche2 l;;
 let liste4 = basdroit l;;
 
 let rec inverser l = match l with

@@ -262,3 +262,5 @@ let rec convMat m = match m with
 		[] -> ""
 		|_ -> convListe(List.hd m)^"\n"^(convMat (supprime_element 0 m));;
 
+let ecrMat m = let h = List.length m in let l = List.length(List.hd m) in output_string imgOut ((ecrParam h l)^(convMat m));;
+

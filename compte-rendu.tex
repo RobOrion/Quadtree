@@ -23,16 +23,22 @@
 \section{Organisation du programme}
 \subsection{Problème posé}
 L'objectif de ce projet et de réaliser dans le langage OCaml un programme permettant de manipuler des images, encodées sous forme d’arbre. Par soucis de simplification, on ne considère que les images carrées, donc de taille $2^n * 2^n$.
+
 \subsection{Analyse et résolution du problème} 
+Pour réussir à faire ce projet il fallait déjà savoir sous quel format se présentait une image ppm, c'est-à-dire une première ligne qui contient la taille notamment de l'image entre autre. Il fallait donc réussir à lire l'image et la transformer en matrice puis en liste de liste. \newline Ensuite la partie la plus importante consistait à construire l'arbre. Pour cela il fallait diviser l'image en quatre puis transformer les listes binaires. La fonction creationArbre permet alors de construire l'arbre. Ensuite, concernant les opérations pour modifier l'image il fallait travailler sur les noeuds de l'arbre pour réussir à faire les rotations dans le sens horaire et anti-horaire et de même pour les miroirs. \newline Enfin, pour l'inversion des couleurs, nous avons travaillé sur les pixels en faisant 255 moins la valeur de la couleur. Puis, pour la compression nous avons décidé, pour simplifier le problème, de comprendre l'impact du taux de compression en tant qu'arbre où nous retirions le dernier étage.\newline Et pour l'enregistrement, nous avons fait le chemin inverse du chargement tout au début du programme.
 
 \subsubsection{Inconvénients}
-Nous nous sommes rendu compte trop tard que nous n'avons à aucun moment proposé à l'utilisateur le choix. En effet la seule image utilisable est celle que nous avons nous-même choisi (et qui se nomme "zombie.ppm").\newline La seule façon pour l'utilisateur de changer l'image à modifier et d'accéder au code du programme et de changer lui-même le nom.
+Nous nous sommes rendu compte trop tard que nous n'avons à aucun moment proposé à l'utilisateur le choix. En effet la seule image utilisable est celle que nous avons nous-même choisi (et qui se nomme "zombie.ppm").\newline La seule façon pour l'utilisateur de changer l'image à modifier et d'accéder au code du programme et de changer lui-même le nom.\newline De plus, nous n'avons pas réussi à faire la segmentation car nous ne comprenions pas comment il fallait opérer pour classifier les noeuds de l'arbre. 
+
 \section{Contribution au projet Quadtree}
-Nous avons jugé le projet suffisamment court pour ne pas avoir à nous répartir les tâches de façon précises, via un tableau par exemple comme cela fut le cas pour le projet de fin d'année de CPI1. Nous avons avancés ensemble, à deux sur une même fonction ou séparément selon les besoins du moment.
+Nous avons jugé le projet suffisamment court pour ne pas avoir à nous répartir les tâches de façon précises, via un tableau par exemple comme cela fut le cas pour le projet de fin d'année de CPI1. Nous avons avancé ensemble, à deux sur une même fonction ou séparément selon les besoins du moment. Ainsi, du chargement de l'image jusqu'à l'enregistrement de l'image toutes les tâches ont été faites ensemble. 
+
 \section{Problèmes rencontrés}
+Nous avons dans un premier temps buté sur le choix du type pour le quadtree car il détermine comment chaque ligne devra être rédigée. Nous avons eu du mal à écrire les fonctions pour diviser le côté gauche de l'image. Car elles ne devaient pas fonctionner comme celles qui divisaient le côté droit. En testant notre programme entier il nous reste un problème majeur qui est que le terminal nous affiche un message d'erreur "failure .tl" et nous n'arrivons pas à le corriger car nous ne savons pas d'où il vient.  
 
 \section{Bilan personnel}
 \subsection{Robin CHATELET}
+Ce projet représentait un défi car il permettait d'utiliser nos connaissances sur les arbres sur un cas concret où nous devions tout faire de A à Z. En effet, dans un premier temps nous devions générer cet arbre puis nous devions le modifier pour ensuite l'enregistrer et de ce fait obtenir une image modifiée avec des opérations simples. Je regrette en revanche de ne pas avoir eu assez de temps pour faire l'interface graphique, ce qui nous aurait permis de présenter à l'utilisateur une vraie possibilité simple d'interragir avec la modification de l'image. 
 
 \subsection{Hugo KANDEL}
 Ce projet fut intéressant dans la mesure où nous devions trouver une autre façon de résoudre un problème précédemment résolu.\newline

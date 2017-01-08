@@ -252,4 +252,13 @@ let PixeltoString pixel = (string_of_int pixel.r)^" "^(string_of_int pixel.g)^" 
 let rec StringToInt l = match l with
 		[] -> []
 		|tete::suivant -> (int_of_string (tete) :: convStrToInt (suivant));;
+		
+let rec convListe l = match l with
+		[] -> ""
+		|_ -> PixeltoString(List.hd l)^(convListe (supprime_element 0 l));;
+
+
+let rec convMat m = match m with
+		[] -> ""
+		|_ -> convListe(List.hd m)^"\n"^(convMat (supprime_element 0 m));;
 

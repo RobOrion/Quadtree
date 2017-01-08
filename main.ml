@@ -181,6 +181,8 @@ let rec creationArbre l f = match l with
 
 let arbreComplet = creationArbre (liste taille);;
 
+(*------------------------opérations sur l'arbre------------------------------*)
+
 let rec rotation90sensdirect arbre = match arbre with
   	| []    -> []    
   	| Noeud(n,x,y,v)  -> 
@@ -206,14 +208,48 @@ let rec mirroirDroiteGauche arbre = match arbre with
 
 let inverspixel pixel = {r=255 - pixel.r ; g= 255 - pixel.g ; b = 255 - pixel.b};;
 
-(*à modifier*)
-(* creates a quadtree size 'n' with values inserted from the list of 
-   (x,y,v) tuples - 'x','y' coordinates and 'v' the value *)
+(*------------------------compression------------------------------*)
+let rec hauteur arbre = match arbre with 
+        |Pixel(taille,u,v,w) -> 1
+        |Noeud(r,f1,f2,f3,f4) -> 1+ max(hauteur(f1) hauteur(f2) hauteur(f3) hauteur(f4));;
 
-(*let faire_arbre n l =
-  let rec trouver n l quadtree =
-    match l with
-      | []    -> quadtree
-      | x::r -> ( match x with
-          | (x1,x2,x3) -> trouver n r (insert quadtree (x1,x2) x3) )
-  in trouver n l (quadtree (n, n/2, n/2, n/2, n/2))*)
+let moyenneNoeud fils1 fils2 fils3 fils4 = (fils1+fils2+fils3+fils4)/4;;
+
+let compression arbre = let rec ssCompression arbre taille index = match arbre with
+                                                            |Pixel(taille,u,v,w)->(match hauteurarbre-1=index) with 
+        |true-> Pixel(taille/4,u,v,w)
+        |false-> arbre 
+                                                            |Noeud(r,f1,f2,f3,f4)->(match hauteurarbre-1=index) with 
+        |true-> Noeud(moyenneNoeud (f1,f2,f3,f4),f1,f2,f3,f4)
+        |false-> arbre
+        
+        
+        in sCompression arbre (hauteur) 1;;
+
+(*------------------------ Enregistrement ------------------------------*)
+
+let supprime_element i l = if i < 0 || i>= List.length l then failwith
+                           else 
+                              let rec delete i l = match l with 
+                                          [] -> []
+                                          |h::t when i = 0 -> t
+                                          |h::t -> h::delete(i-1) t
+                                in delete i l;;
+                                
+let rec fusion m1 m2 n = match m2 with
+              []-> []
+              |_ -> ((List.nth m1 n)@(List.nth m2 0))::(fusion m1 (supprime 0 m2) (n+1));;
+              
+let creerMat a = [[a]];;
+
+let rec transfoArbre a = match a with
+              [] -> []
+              |Pixel(_,v) -> creerMat(v)
+              |Noeud(v,f1,f2,f3,f4) -> fusion ((transfoArbre f1)@(transfoArbre f3)) ((transfoArbre f2)(transfoArbre f4)) 0;;
+              
+let PixeltoString pixel = (string_of_int pixel.r)^" "^(string_of_int pixel.g)^" "^(string_of_int pixel.b)^" ";;
+
+let rec StringToInt l = match l with
+		[] -> []
+		|tete::suivant -> (int_of_string (tete) :: convStrToInt (suivant));;
+

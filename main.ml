@@ -75,33 +75,15 @@ let rec traduireLigneBinaire a x = match x with
 
 let listeFinaleBinaire a l = traduireLigneBinaire (a (l-1));;
 
-(*let rec timgB nb l = match nb with
-			0 -> ""
-			|_ -> let a = retourneLigneBinaire imgIn in (listeFinaleBinaire a l)^"\n"^(timgB (nb-1) l);;
-
-let bin img = 
-	let p = param img in 
-	let h = haut p in 
-	let l = larg p in output_string imgOut ((ecrParam h l)^(timgB h l));; *)
-
 (*------------------------construction de l'arbre------------------------------*)
 
-(*let getRacine a = match a with
-              Pixel(_,v)-> raise Arbre_vide
-              |Noeud (v,_,_,_,_) -> v;;*)
 	     
 	     (*problème sur le constructeur Noeud*)
 let rec longueurListe l =
         if List.tl(l) = [] then 1
         else 1 + longueurListe(List.tl(l));;
 
-(*let rec inserer a x = match a with
-           Pixel(_,v)-> Noeud (_,_,x,_,_)
-          | Noeud (fg,r,fd) ->
-          if x=r then a else
-          if x>r then Noeud (fg,r,inserer fd x)
-          else Noeud (inserer fg x,r,fd);;
- *)
+
 let moithaut l =
           let rec traitement m l =
                             if (m >= (longueurListe l )) then []
@@ -111,12 +93,6 @@ let moitbas l =
           let rec traitement m l = if (m >= (longueurListe l )) then l
                             	   else (traitement (m+1) (List.tl l))  in traitement 0 l ;;
 
-(*let rec gauche l n = match l with 
-	[] -> []
-	| _ -> match (n < (List.length l)) with
-		false -> []
-		|true -> (List.nth l n)::(List.nth l (n+1))::(List.nth l (n+2))::(List.nth l (n+3))::(div l (n+(sqrt(List.length l))));;
-*)
 let rec hautgauche1 l n = match l with (*n=0 moitiée gauche liste*)
 	[] -> []
 	| _ -> (match (n)<((List.length l)/2) with
